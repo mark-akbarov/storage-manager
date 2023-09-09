@@ -1,0 +1,57 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}
+ Xarid bo'limi
+{% endblock %}
+{% block content %}
+ <h1> Xarid bo'limi</h1>
+ <table class="cart">
+ <thead>
+ <tr>
+ <th>Rasmi</th>
+ <th>Mahsulot</th>
+ <th>Soni</th>
+ <th>O'chirish</th>
+ <th>Rangi</th>
+ <th>Narxi</th>
+  <th>Soni x Narxi</th>
+ </tr>
+ </thead>
+ <tbody>
+ {% for item in cart %}
+ {% with product=item.product %}
+ <tr>
+ <td>
+ <a href="{{ product.get_absolute_url }}">
+ <img src="{% if product.image %}{{ product.image.url }}
+ {% else %}{% static "img/no_image.png" %}{% endif %}">
+ </a>
+ </td>
+   <td>{{ product.name }}</td>
+ <td>{{ item.quantity }} </td>
+ <td>
+ <form action="{% url "cart:cart_remove" product.id %}"
+method="post">
+ <input type="submit" value="Remove">
+ {% csrf_token %}
+ </form>
+ </td>
+ <td class="num">{{ item.color }}</td>
+ <td class="num">{{ item.price }}</td>
+   <td class="num">{{ item.total_price }}</td>
+ </tr>
+ {% endwith %}
+ {% endfor %}
+ <tr class="total">
+ <td>Jami</td>
+ <td colspan="5"></td>
+ <td class="num">{{ cart.get_total_price }}</td>
+ </tr>
+ </tbody>
+ </table>
+ <p class="text-right">
+ <a href='{% url "shop:product_list" %}' class="button
+ light">Xaridni davom etish</a>
+ <a href='{% url "orders:order_create" %}' class="button">Tugatish</a>
+ </p>
+{% endblock %}

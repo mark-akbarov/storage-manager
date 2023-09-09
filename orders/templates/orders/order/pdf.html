@@ -1,0 +1,49 @@
+
+<html>
+<body>
+ <h1>AD & AN</h1>
+ <p>Manzil: Qo'qon shahar, Mumtoz bozor, 4-blok, 10-do'kon</p>
+ <p>Tel: +998905505551(Anvarjon) +998331505551(Abdumalik) </p>
+ <p>
+ Buyurtma raqami {{ order.id }}<br>
+ <span>
+ {{ order.created|date:"M d, Y" }} {{ order.created|time:"H:i:s" }}
+ </span>
+ </p>
+ <p>
+ Klent: {{ order.first_name }} {{ order.last_name }}
+ ({{ order.address }})
+ </p>
+ <table>
+ <thead>
+ <tr>
+ <th>Mahsulot</th>
+ <th>Narxi</th>
+ <th>Rangi</th>
+ <th>Soni</th>
+ </tr>
+ </thead>
+ <tbody>
+ {% for item in order.items.all %}
+<tr class="row{% cycle "1" "2" %}">
+ <td>{{ item.product.name }}</td>
+ <td class="num">{{ item.price }}</td>
+ <td class="num">{{ item.color }}</td>
+ <td class="num">{{ item.quantity }}</td>
+ </tr>
+ {% endfor %}
+ <tr class="total">
+ <td colspan="1">Jami</td>
+ <td class="num">${{ order.get_total_cost }}</td>
+ </tr>
+ </tbody>
+ </table>
+
+ <span class="{% if order.paid %}paid{% else %}pending{% endif %}">
+ {% if order.paid %}AD & AN{% else %}To'lanmadi{% endif %}
+ </span>
+</body>
+<footer>
+ <p>Tayyorladi:<br>Izoh:</p>
+</footer>
+</html>
